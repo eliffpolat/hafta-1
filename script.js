@@ -49,18 +49,31 @@ document.addEventListener('DOMContentLoaded', (event) => {
     animate();
 
     // Image changing functionality
-    const images = ['images/imageeye.jpeg', 'images/line.jpg'];
+    const images = ['images/IMG_2601.PNG', 'images/line.jpg', 'images/star.jpg'];
     let currentImageIndex = 0;
 
     const changeDrawingButton = document.getElementById('changeDrawing');
     const mainImage = document.getElementById('mainImage');
 
-    changeDrawingButton.addEventListener('click', () => {
+    // Function to change the image
+    function changeImage() {
         currentImageIndex = (currentImageIndex + 1) % images.length;
-        mainImage.src = images[currentImageIndex];
+        if (mainImage) {
+            mainImage.src = images[currentImageIndex];
+        }
         progress = 0;
         animate();
-    });
+    }
+
+    // Set up event listener for the button
+    if (changeDrawingButton) {
+        changeDrawingButton.addEventListener('click', changeImage);
+    }
+
+    // Initialize the image on page load if we're on the home page
+    if (mainImage) {
+        mainImage.src = images[currentImageIndex];
+    }
 
     // Project hover effect
     const projectItems = document.querySelectorAll('.project-item');
