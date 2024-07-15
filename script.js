@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     animate();
 
     // Image changing functionality
-    const images = ['images/IMG_2601.PNG', 'images/line.jpg', 'images/star.jpg'];
+    const images = ['images/imageeye.jpeg', 'images/line.jpg'];
     let currentImageIndex = 0;
 
     const changeDrawingButton = document.getElementById('changeDrawing');
