@@ -1,73 +1,94 @@
-let fruits = ["Apple" , " Banana" , " Orange" , "Mango"]
-console.log(fruits[1])
-fruits.push("Grapes")
-fruits.pop()
-let person = { 
-    firstName: "John",
-    lastName: "Doe",
-    age: 30,
-    hobbies: [ "Reading" , "Travelling"],
-    address: {
-        street: "123 Main St",
-        city: "Anytown",
-        country: "USA"
-    }
-};
-console.log(person.firstName);
-console.log(person.address.city);
-person.age = 31;
-person.hobbies.push("cooking");
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Header animation
+    const headerCanvas = document.createElement('canvas');
+    headerCanvas.width = window.innerWidth;
+    headerCanvas.height = 100;
+    document.querySelector('#canvaswrapper').appendChild(headerCanvas);
+    const headerCtx = headerCanvas.getContext('2d');
 
+    function drawHeaderAnimation(ctx, progress) {
+        ctx.clearRect(0, 0, headerCanvas.width, headerCanvas.height);
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
 
-for(let i=0; i< 5; i++){
-    console.log(i);
-}
-for(let i= 0; i< fruits.length; i++) {
-    console.log(fruits[i])
-}
-let x= 10;
-if(x>5) {
-    let y = [ "bye"]
-    
-    console.log(y)
-} else
-{console.log("no")}
-
-let age = 25;
-if(age>=18) {
-    if (age< 21) {
-        console.log("You are an adult but not yet allowed to drink.");
-
-    } else {
-        console.log("You are an adult an allowed to drink.")
-    } }
-    else {
-        console.log("You are a minor.")
+        const step = headerCanvas.width / 100;
+        for (let i = 0; i < progress; i++) {
+            ctx.beginPath();
+            ctx.moveTo(i * step, 50 + Math.sin(i * 0.1) * 20);
+            ctx.lineTo((i + 1) * step, 50 + Math.sin((i + 1) * 0.1) * 20);
+            ctx.stroke();
+        }
     }
 
-    let ggggg = document.getElementById('name')
-    console.log(ggggg)
-    let picture = document.getElementsByClassName('headWrapper')
-    console.log(picture)
+    // Page-specific animation
+    const pageCanvas = document.createElement('canvas');
+    pageCanvas.width = window.innerWidth;
+    pageCanvas.height = 100;
+    document.querySelector('#pageAnimation').appendChild(pageCanvas);
+    const pageCtx = pageCanvas.getContext('2d');
 
-    ggggg.innerHTML= 'ep'
+    function drawPageAnimation(ctx, progress) {
+        ctx.clearRect(0, 0, pageCanvas.width, pageCanvas.height);
+        ctx.fillStyle = '#333';
+        ctx.beginPath();
+        ctx.arc(pageCanvas.width / 2, 50, progress / 2, 0, Math.PI * 2);
+        ctx.fill();
+    }
 
-    function changeeye(){
-    let changeeye = document.getElementById('eye')
-    let newImagesource = 'images/line.jpg'
-    changeeye.setAttribute('src',newImagesource)
-}
-function additalic(){
-    let rr = document.getElementById('text2')
-    rr.classList.add('italic')
-}
+    let progress = 0;
+    function animate() {
+        progress++;
+        drawHeaderAnimation(headerCtx, progress);
+        drawPageAnimation(pageCtx, progress);
 
-let rr = document.getElementById('text2')
+        if (progress <= 100) {
+            requestAnimationFrame(animate);
+        }
+    }
 
-function createNewDiv(){
-    let newDiv = document.createElement('div')
-    newDiv.classList.add('newDiv')
-    newDiv.textContent = 'elif'
+    animate();
 
-    document.body.appendChild(newDiv)
-}
+    // Image changing functionality
+    const images = ['images/imageeye.jpeg', 'images/line.jpg'];
+    let currentImageIndex = 0;
+
+    const changeDrawingButton = document.getElementById('changeDrawing');
+    const mainImage = document.getElementById('mainImage');
+
+    changeDrawingButton.addEventListener('click', () => {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        mainImage.src = images[currentImageIndex];
+        progress = 0;
+        animate();
+    });
+
+    // Project hover effect
+    const projectItems = document.querySelectorAll('.project-item');
+    projectItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            item.style.transform = 'scale(1.05)';
+            item.style.transition = 'transform 0.3s ease';
+        });
+        item.addEventListener('mouseleave', () => {
+            item.style.transform = 'scale(1)';
+        });
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Resize event listener
+    window.addEventListener('resize', () => {
+        headerCanvas.width = window.innerWidth;
+        pageCanvas.width = window.innerWidth;
+        progress = 0;
+        animate();
+    });
+});
